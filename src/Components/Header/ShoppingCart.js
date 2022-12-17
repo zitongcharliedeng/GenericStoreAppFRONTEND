@@ -4,11 +4,11 @@ import { IconButton } from '@mui/material';
 
 function ShoppingCart(props) {
   const handleClick = () => {
-    props.setView('checkout')
+    props.setView('preCheckout')
   }
 
   return (
-    <IconButton onClick={handleClick}> 
+    <IconButton name='shoppingCart' onClick={handleClick}> 
       <ShoppingCartIcon />
     </IconButton>
   )

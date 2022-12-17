@@ -46,7 +46,17 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function SearchBar() {
+export default function SearchBar(props) {
+  
+  const handleChange = (event) => {
+    props.setSearchBarValue(event.target.value)
+  }
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      //enter is pressed but no need for this action anymore
+    }
+  }
+
   return (
     <Search>
       <SearchIconWrapper>
@@ -55,6 +65,9 @@ export default function SearchBar() {
       <StyledInputBase
         placeholder="Search…"
         inputProps={{ 'aria-label': 'search' }}
+        onChange={handleChange}
+        value={props.searchBarValue}
+        onKeyDown={handleKeyDown}
       />
     </Search>
   );

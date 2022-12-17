@@ -6,28 +6,30 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import CounterAndAddButton from './CounterAndAddButton';
 
-export default function ProductPreviewCard(props) {
+const ProductCard = ({product, cart, setCart, addFlash}) => {
+  if (product === null) {return}
+
   return (
-    <Card sx={{ width: "100%", height: "1",}}>
+    <Card sx={{width: "48%", height: "40ch"}}>
       <CardMedia
-        sx={{ width: "100%", height: "50%"}}
+        sx={{ width: "100%", height: "20ch"}}
         component="img"
-        alt="green iguana"
-        image="https://wallpapercave.com/wp/wp3492732.jpg"
+        alt={product.name}
+        image={product.imageUrl}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {props.name}
+          <em>{product.name}</em>
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
         </Typography>
       </CardContent>
       
       <CardActions>
-        <CounterAndAddButton name={props.name} cart={props.cart} setCart={props.setCart} addFlash={props.addFlash}/>
+        <CounterAndAddButton product={product} cart={cart} setCart={setCart} addFlash={addFlash}/>
       </CardActions>
     </Card>
   );
 }
+
+export default ProductCard

@@ -15,7 +15,7 @@ import SearchBar from './SearchBar';
 import ShoppingCart from './ShoppingCart';
 
 const pages = ['Fruit', 'Veg', 'Mystery'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Logout'];
 
 function Header(props) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -37,7 +37,7 @@ function Header(props) {
   };
 
   const handleHomeClick = () => {
-    props.setView('home')
+    props.setView('productsAll')
   }
 
   return (
@@ -99,7 +99,7 @@ function Header(props) {
               ))}
             </Menu>
           </Box>
-          <SearchBar/>
+          <SearchBar searchBarValue={props.searchBarValue} setSearchBarValue={props.setSearchBarValue}/>
           <Typography
             variant="h5"
             noWrap

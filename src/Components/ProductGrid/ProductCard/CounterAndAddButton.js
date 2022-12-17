@@ -2,7 +2,7 @@ import { AddBox, IndeterminateCheckBox } from '@mui/icons-material';
 import { Button, IconButton, TextField } from '@mui/material';
 import React from 'react'
 
-function CounterAndAddButton(props) {
+const CounterAndAddButton = (props) => {
 
   const [num, setNum] = React.useState(1);
 
@@ -27,8 +27,8 @@ function CounterAndAddButton(props) {
 
   const handleAdd = () => {
     const oldQuantity = 0 // change to show real oldQuantity later
-    props.setCart([...props.cart, {name: props.name, quantity: oldQuantity + num}])
-    props.addFlash({type: 'success', text: `${props.name} (${num}) added to cart!`})
+    props.setCart([...(props.cart), {name: props.product.name, quantity: (oldQuantity + num), cost: (props.product.price)*num}])
+    props.addFlash({type: 'success', text: `${props.product.name} (${num}) added to cart!`})
   };
 
   return (
@@ -55,9 +55,11 @@ function CounterAndAddButton(props) {
         
       </div>
 
-      <div className='addButton'>
+      <div className='addButton' style={{marginLeft: 'auto', marginRight: '0'}} >
         <Button size="large" onClick={handleAdd}>
-          Add
+          Add to cart
+          <br/> 
+          (£{(props.product.price*num).toFixed(2)})
         </Button>
       </div>
     </>

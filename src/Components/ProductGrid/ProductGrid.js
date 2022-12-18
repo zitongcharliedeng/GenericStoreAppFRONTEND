@@ -6,113 +6,54 @@ import {PaginationAnimated} from 'react-animated-pagination';
 import ProductCard from './ProductCard/ProductCard.js';
 
 const ProductGrid = (props) => {
+  
+  const searchCheck = (product) => {
+    if ( ((props.searchBarValue.toLowerCase())) === (product.name.toLowerCase()) ) {
+      return true
+    }
+    if ( (props.searchBarValue.toLowerCase()) === ('') ) {
+      return true
+    }
+    return false
+  }
+  const productListAfterSearch = props.productList.filter(searchCheck)
+  console.log(productListAfterSearch)
 
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  }));
-
-  const fruitProductList = props.allProductLists[0]
-
-
-    const allGridItems = props.allProductLists.map((productList) => {
-      return productList.map((product) => {
-        if (props.searchBarValue === '') {
-        return(      
-          <Grid item xs={3} key={product.name}>
-            <Item><ProductCard product={product} cart={props.cart} setCart={props.setCart} addFlash={props.addFlash}/></Item>
-          </Grid>
-        )
-        }
-        if (product.name.toLowerCase() === props.searchBarValue.toLowerCase()) {
-          return(
-            <Grid item xs={3} key={product.name}>
-              <Item><ProductCard product={product} cart={props.cart} setCart={props.setCart} addFlash={props.addFlash}/></Item>
-            </Grid>
-          )
-        }
-        return(null)
-      })
-    })
-
-
-    const fruitGridItems = props.allProductLists[0].map((product) => {
-      if (props.searchBarValue === '') {
-        return(      
-          <Grid item xs={3} key={product.name}>
-            <Item><ProductCard product={product} cart={props.cart} setCart={props.setCart} addFlash={props.addFlash}/></Item>
-          </Grid>
-        )
-      }
-      if (product.name.toLowerCase() === props.searchBarValue.toLowerCase()) {
-        return(
-          <Grid item xs={3} key={product.name}>
-            <Item><ProductCard product={product} cart={props.cart} setCart={props.setCart} addFlash={props.addFlash}/></Item>
-          </Grid>
-        )
-      }
-      return(null)
-    })
-
-
-    const vegGridItems = props.allProductLists[1].map((product) => {
-      if (props.searchBarValue === '') {
-        return(      
-          <Grid item xs={3} key={product.name}>
-            <Item><ProductCard product={product} cart={props.cart} setCart={props.setCart} addFlash={props.addFlash}/></Item>
-          </Grid>
-        )
-      }
-      if (product.name.toLowerCase() === props.searchBarValue.toLowerCase()) {
-        return(
-          <Grid item xs={3} key={product.name}>
-            <Item><ProductCard product={product} cart={props.cart} setCart={props.setCart} addFlash={props.addFlash}/></Item>
-          </Grid>
-        )
-      }
-      return(null)
-    })
-
-
-    const mysteryGridItems = props.allProductLists[2].map((product) => {
-      if (props.searchBarValue === '') {
-        return(      
-          <Grid item xs={3} key={product.name}>
-            <Item><ProductCard product={product} cart={props.cart} setCart={props.setCart} addFlash={props.addFlash}/></Item>
-          </Grid>
-        )
-      }
-      if (product.name.toLowerCase() === props.searchBarValue.toLowerCase()) {
-        return(
-          <Grid item xs={3} key={product.name}>
-            <Item><ProductCard product={product} cart={props.cart} setCart={props.setCart} addFlash={props.addFlash}/></Item>
-          </Grid>
-        )
-      }
-      return(null)
-    })
-
+  const productGrid = () => {
+    if (productListAfterSearch.length === 0) {
+      return(
+        <div>
+          <h1>
+            {`Sorry, we couldn't find search results for "${props.searchBarValue}".`}
+          </h1>
+          <br/>
+          Maybe check your spaces in the search bar. Items are not case sensitive.
+        </div>
+      ) 
+    } else {
+      return(
+          <PaginationAnimated
+            class='flexContainer'
+            style={{display: "inline-block", alignItems: "center"}}
+            bottomNav={true}
+            topNav={true}
+            itemsOnPage={8}
+            items={productListAfterSearch}
+            entryProp="product"
+            iterationKey="product.name"
+            children={
+              <ProductCard cart={props.cart} setCart={props.setCart} addFlash={props.addFlash} />
+            }
+          />
+      )
+    }
+  }
 
 
   return (
-    <div style={{marginLeft: "40ch", marginRight: "40ch", marginUp: "3ch", marginDown: "3ch"}}>
-      <PaginationAnimated
-        class='flexContainer'
-        style={{display: "inline-block"}}
-        bottomNav={true}
-        topNav={true}
-        itemsOnPage={4}
-        items={fruitProductList}
-        entryProp="product"
-        iterationKey="product.name"
-        children={
-          <ProductCard cart={props.cart} setCart={props.setCart} addFlash={props.addFlash} />
-        }
-      />
-    </div>            
+    <div style={{marginLeft: "25ch", marginRight: "25ch"}}>
+      {productGrid()}
+    </div>
   );
 } 
 

@@ -28,9 +28,13 @@ code {
 }
 
 .paginationContainer__currentPageDiv {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    row-gap: 2ch;
-    column-gap: 2ch;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-left: 2ch;
+  row-gap: 2ch;
+  column-gap: 2ch;
+}
+.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation1.MuiCard-root.css-mtkaw1-MuiPaper-root-MuiCard-root{
+  align-items: center;
 }

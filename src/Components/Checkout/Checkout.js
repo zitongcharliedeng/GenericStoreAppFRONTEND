@@ -3,7 +3,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import Toolbar from '@mui/material/Toolbar';
 import Paper from '@mui/material/Paper';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -16,7 +15,26 @@ import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
 
-function Copyright() {
+export default function Checkout({cart}) {
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [addresses, setAddresses] = React.useState({
+    firstName: '',
+    lastName: '',
+    address1: '',
+    address2: '',
+    city: '',
+    state: '',
+    zip: '',
+    country: '',
+  });
+  const [payments, setPayments] = React.useState({
+    cardName: '',
+    cvv: '',
+    cardNumber: '',
+    expDate: '',
+  });
+
+  function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" align="center">
       {'Copyright © '}
@@ -29,25 +47,22 @@ function Copyright() {
   );
 }
 
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
+  const steps = ['Shipping address', 'Payment details', 'Review your order'];
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <AddressForm />;
-    case 1:
-      return <PaymentForm />;
-    case 2:
-      return <Review />;
-    default:
-      throw new Error('Unknown step');
+  function getStepContent(step) {
+    switch (step) {
+      case 0:
+        return <AddressForm addresses={addresses} setAddresses={setAddresses}/>;
+      case 1:
+        return <PaymentForm payments={payments} setPayments={setPayments}/>;
+      case 2:
+        return <Review cart={cart} addresses={addresses} payments={payments}/>;
+      default:
+        throw new Error('Unknown step');
+    }
   }
-}
 
-const theme = createTheme();
-
-export default function Checkout() {
-  const [activeStep, setActiveStep] = React.useState(0);
+  const theme = createTheme();
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);

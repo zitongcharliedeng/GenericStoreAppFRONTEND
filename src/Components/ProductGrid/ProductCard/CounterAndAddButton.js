@@ -7,9 +7,10 @@ const CounterAndAddButton = (props) => {
   const [num, setNum] = React.useState(1);
 
   const handleChange = (e) => {
+    const i = parseInt(e.target.value)
     const regex = /^[0-9\b]+$/;
-    if ((e.target.value === "" || regex.test(e.target.value)) && (e.target.value !== 0) ) {
-      setNum(e.target.value);
+    if ((i === "" || regex.test(i)) && (i !== 0) && (i < 100)) {
+      setNum(i);
     }
   };
 
@@ -22,6 +23,9 @@ const CounterAndAddButton = (props) => {
   };
 
   const handlePlus = () => {
+    if (num === 99) {return( //or num = props.product.currentStock but for sake of testing ill put every item on 99 per order
+      props.addFlash({type: 'warning', text: `Maximum order amount (${num}) of "${props.product.name}" reached.`})
+    )}
     setNum(num+1)
   };
 
@@ -40,7 +44,7 @@ const CounterAndAddButton = (props) => {
         </IconButton>
 
         <TextField
-          sx={{maxWidth: "7ch"}}
+          sx={{maxWidth: "5ch"}}
           type="text"
           id="outlined-basic"
           variant="outlined"
@@ -56,7 +60,7 @@ const CounterAndAddButton = (props) => {
       </div>
 
       <div className='addButton' style={{marginLeft: 'auto', marginRight: '0'}} >
-        <Button size="large" onClick={handleAdd}>
+        <Button size="small" onClick={handleAdd}>
           Add to cart
           <br/> 
           (£{(props.product.price*num).toFixed(2)})

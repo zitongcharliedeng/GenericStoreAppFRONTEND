@@ -10,9 +10,9 @@ const ProductCard = ({product, cart, setCart, addFlash}) => {
   if (product === null) {return}
 
   return (
-    <Card sx={{width: "48%", height: "40ch"}}>
+    <Card sx={{width: "35ch", height: "40ch"}}>
       <CardMedia
-        sx={{ width: "100%", height: "20ch"}}
+        sx={{width: "100%", height: "50%", objectFit: "scale-down", marginLeft: "0%"}}
         component="img"
         alt={product.name}
         image={product.imageUrl}

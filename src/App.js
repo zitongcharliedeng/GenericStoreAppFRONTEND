@@ -1,7 +1,7 @@
 import './App.css';
 import Header from './Components/Header/Header';
 import ProductGrid from './Components/ProductGrid/ProductGrid.js'
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { PreCheckout } from './Components/PreCheckout';
 import { Alert } from '@mui/material';
 import PrintableOrderConfirmation from './Components/PrintableOrderConfirmation/PrintableOrderConfirmation';
@@ -10,8 +10,7 @@ import SignUp from './Components/SignUp';
 import Checkout from './Components/Checkout/Checkout';
 
 function App() {
-
-  const fruitProductList = [
+  const productList = [
     //fruits
     {name: "Apple", imageUrl: "https://t3.ftcdn.net/jpg/01/76/97/96/240_F_176979696_hqfioFYq7pX13dmiu9ENrpsHZy1yM3Dt.jpg", price: 7.39},
     {name: "Banana", imageUrl: "https://t3.ftcdn.net/jpg/01/74/93/80/240_F_174938002_zvgqpU18283OpwpHCA1hrfItZ76sMuMB.jpg", price: 22.22},
@@ -21,10 +20,6 @@ function App() {
     {name: "Peach", imageUrl: "https://t4.ftcdn.net/jpg/00/84/46/77/240_F_84467783_4fRknXSuMiBrcI0uNVAc75NKjxJi1XHv.jpg", price: 68.23},
     {name: "Pear", imageUrl: "https://t3.ftcdn.net/jpg/00/42/34/30/240_F_42343029_y7q7yWDO1hrmuZuIcmRqoaeI4IcjecIT.jpg", price: 42.34} ,
     {name: "Strawberry", imageUrl: "https://t4.ftcdn.net/jpg/01/26/92/23/240_F_126922352_EmYCsPhTG1Dww3o2mnfb6Y3C4ex1u7Vz.jpg", price: 654.74},
-  ]
-
-  const vegProductList = [
-    //veg
     {name: "Potato", imageUrl: "https://t3.ftcdn.net/jpg/00/85/79/92/240_F_85799278_0BBGV9OAdQDTLnKwAPBCcg1J7QtiieJY.jpg", price: 6.26},
     {name: "Cucumber", imageUrl: "https://t4.ftcdn.net/jpg/01/12/84/47/240_F_112844774_6zjXJDtV6wPY9ReDOjv3coNm6lEI4vP0.jpg", price: 2.56},
     {name: "Tomato", imageUrl: "https://t4.ftcdn.net/jpg/02/32/98/31/240_F_232983161_9lmUyHKnWbLW0vQPvWCrp5R5DSpexhbx.jpg", price: 70.65},
@@ -33,10 +28,6 @@ function App() {
     {name: "Bell Pepper", imageUrl: "https://t4.ftcdn.net/jpg/02/52/47/13/240_F_252471388_wVl2FN6gbbpRyWrMkl1rh8mL3PR84w0r.jpg", price: 5.43},
     {name: "Broccoli", imageUrl: "https://t3.ftcdn.net/jpg/02/50/29/00/240_F_250290014_4snUMjCdfdy6Jeik0iftCRuNFUUb7rP1.jpg", price: 6.62},
     {name: "Mushroom", imageUrl: "https://t3.ftcdn.net/jpg/00/77/95/06/240_F_77950626_G8EzHrbcuuUfxhdJPxJhAgCOSukLeZ9k.jpg", price: 1.65},
-  ]
-
-  const mysteryProductList = [
-    //mystery
     {name: "Trash", imageUrl: "https://t4.ftcdn.net/jpg/02/50/84/53/240_F_250845383_a58dc6o8zpiWeBbw6dAf8uwAJp6qrKIH.jpg", price: 55.57},
     {name: "Jeffery", imageUrl: "https://t3.ftcdn.net/jpg/05/46/73/38/240_F_546733878_Qm9mdi6UHXBKtDpooaZ6ZlBmXCeDeLzI.jpg", price: 1.01},
     {name: "Box", imageUrl: "https://t3.ftcdn.net/jpg/01/14/59/70/240_F_114597045_9L1cTFXqcDybgEn0AsAlWamtB1d8ZtTY.jpg", price: 868.23},
@@ -46,8 +37,6 @@ function App() {
     {name: "Water", imageUrl: "https://t3.ftcdn.net/jpg/03/02/41/46/240_F_302414671_wSnHnoxbsVGwUPan6NXHvFqghTjffHcR.jpg", price: 204.34},
     {name: "Air", imageUrl: "https://t3.ftcdn.net/jpg/02/85/92/08/240_F_285920838_aakk0JOMG6kSRvN9aqePd3XFddAILIYl.jpg", price: 24.54},
   ]
-
-  const allProductLists = [fruitProductList, vegProductList, mysteryProductList]
 
   const [cart, setCart] = useState([])
   const [view, setView] = useState('productsAll')
@@ -72,7 +61,7 @@ function App() {
   const page = () => {
     switch(view) {
       case 'productsAll':
-        return <ProductGrid allProductLists={allProductLists} cart={cart} setCart={setCart} addFlash={addFlash} deleteFlash={addFlash} searchBarValue={searchBarValue} setSearchBarValue={setSearchBarValue}/>
+        return <ProductGrid productList={productList} cart={cart} setCart={setCart} addFlash={addFlash} deleteFlash={addFlash} searchBarValue={searchBarValue} setSearchBarValue={setSearchBarValue}/>
       case 'preCheckout':
         return <PreCheckout cart={cart} setView={setView} addFlash={addFlash}/>
       case 'orderConfirmation':
@@ -87,6 +76,10 @@ function App() {
         console.log("view undefined, view=", view)
     }
   }
+
+  React.useEffect(() => {
+    setFlashes([])
+  }, [view])
 
   return (
     <div className="App">

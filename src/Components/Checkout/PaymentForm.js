@@ -5,7 +5,14 @@ import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
-export default function PaymentForm() {
+export default function PaymentForm({setPayments, payments}) {
+  
+  const handleChange = (event) => {
+    const paymentsLocalCopy = {...payments}
+    paymentsLocalCopy[event.target.id] = event.target.value
+    setPayments(paymentsLocalCopy)
+  }
+  
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -20,6 +27,8 @@ export default function PaymentForm() {
             fullWidth
             autoComplete="cc-name"
             variant="standard"
+            onChange={handleChange}
+            value={payments['cardName']}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -30,6 +39,8 @@ export default function PaymentForm() {
             fullWidth
             autoComplete="cc-number"
             variant="standard"
+            onChange={handleChange}
+            value={payments['cardNumber']}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -40,6 +51,8 @@ export default function PaymentForm() {
             fullWidth
             autoComplete="cc-exp"
             variant="standard"
+            onChange={handleChange}
+            value={payments['expDate']}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -51,6 +64,8 @@ export default function PaymentForm() {
             fullWidth
             autoComplete="cc-csc"
             variant="standard"
+            onChange={handleChange}
+            value={payments['cvv']}
           />
         </Grid>
         <Grid item xs={12}>

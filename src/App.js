@@ -8,6 +8,7 @@ import PrintableOrderConfirmation from './Components/PrintableOrderConfirmation/
 import SignIn from './Components/SignIn';
 import SignUp from './Components/SignUp';
 import Checkout from './Components/Checkout/Checkout';
+import Dashboard from './Components/Dashboard/Dashboard';
 
 function App() {
   const productList = [
@@ -36,6 +37,7 @@ function App() {
     {name: "Toilet Paper", imageUrl: "https://t4.ftcdn.net/jpg/02/12/47/35/240_F_212473534_2PfO6hxGixEWOY2EcM7jwA32uZTY8MB1.jpg", price: 6.54},
     {name: "Water", imageUrl: "https://t3.ftcdn.net/jpg/03/02/41/46/240_F_302414671_wSnHnoxbsVGwUPan6NXHvFqghTjffHcR.jpg", price: 204.34},
     {name: "Air", imageUrl: "https://t3.ftcdn.net/jpg/02/85/92/08/240_F_285920838_aakk0JOMG6kSRvN9aqePd3XFddAILIYl.jpg", price: 24.54},
+    {name: "A Train Ticket Home", imageUrl: "https://www.moneysavingexpert.com/content/dam/mse/editorial-image-library/guide-images/hero-images/hero-travel-cheaper-train-tickets.jpg", price: 15.54}
   ]
 
   const [cart, setCart] = useState([])
@@ -67,11 +69,13 @@ function App() {
       case 'orderConfirmation':
         return <PrintableOrderConfirmation cart={cart} addFlash={addFlash}/>
       case 'signIn':
-        return <SignIn cart={cart} addFlash={addFlash}/>
+        return <SignIn setView={setView} addFlash={addFlash}/>
       case 'signUp':
-        return <SignUp cart={cart} addFlash={addFlash}/>
+        return <SignUp setView={setView} addFlash={addFlash}/>
       case 'checkout':
         return <Checkout cart={cart} addFlash={addFlash}/>
+      case 'dashboard':
+        return <Dashboard cart={cart} addFlash={addFlash}/>
       default:
         console.log("view undefined, view=", view)
     }

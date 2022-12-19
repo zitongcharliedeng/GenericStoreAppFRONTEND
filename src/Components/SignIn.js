@@ -17,8 +17,8 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit">
+        TheEverythingStore
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -28,7 +28,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-const SignIn = () => {
+const SignIn = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -37,6 +37,10 @@ const SignIn = () => {
       password: data.get('password'),
     });
   };
+
+const handleSignUpClick = () => {
+  props.setView('signUp')
+}
 
   return (
     <ThemeProvider theme={theme}>
@@ -96,7 +100,7 @@ const SignIn = () => {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href='#' onClick={handleSignUpClick} variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

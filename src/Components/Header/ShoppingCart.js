@@ -8,7 +8,7 @@ function ShoppingCart(props) {
   }
 
   return (
-    <IconButton name='shoppingCart' onClick={handleClick}> 
+    <IconButton aria-label='shoppingCart' onClick={handleClick}> 
       <ShoppingCartIcon />
     </IconButton>
   )

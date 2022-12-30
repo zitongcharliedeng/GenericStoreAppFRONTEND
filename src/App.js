@@ -44,10 +44,9 @@ function App() {
   const [view, setView] = useState('productsAll')
   const [flashes, setFlashes] = useState([])
   const [searchBarValue, setSearchBarValue] = useState('')
+  const [sessionToken, setSessionToken] = useState('')
 
   const deleteFlash = (e) => {
-    console.log("hi")
-    console.log(e.target.id)
     const flashesLocal = [...flashes]
     flashesLocal.splice((e.target.id)-1, 1) 
     setFlashes(flashesLocal)
@@ -55,9 +54,16 @@ function App() {
 
   const addFlash = (flashObject) => {
     const newFlash = (
-      <Alert id={flashes.length+1} severity={flashObject.type} onClose={deleteFlash}>{flashObject.text}</Alert>
+      <Alert key={flashes.length+1} id={flashes.length+1} severity={flashObject.type} onClose={deleteFlash}>{flashObject.text}</Alert>
     )
     setFlashes([...flashes, newFlash])
+  }
+
+  const clearThenAddFlash = (flashObject) => {
+    const newFlash = (
+      <Alert key={flashes.length+1} id={flashes.length+1} severity={flashObject.type} onClose={deleteFlash}>{flashObject.text}</Alert>
+    )
+    setFlashes([newFlash])
   }
 
   const page = () => {
@@ -69,13 +75,13 @@ function App() {
       case 'orderConfirmation':
         return <PrintableOrderConfirmation cart={cart} addFlash={addFlash}/>
       case 'signIn':
-        return <SignIn setView={setView} addFlash={addFlash}/>
+        return <SignIn setView={setView} addFlash={addFlash} sessionToken={sessionToken} setSessionToken={setSessionToken}/>
       case 'signUp':
         return <SignUp setView={setView} addFlash={addFlash}/>
       case 'checkout':
-        return <Checkout cart={cart} addFlash={addFlash}/>
+        return <Checkout cart={cart} setCart={setCart} addFlash={addFlash} sessionToken={sessionToken}/>
       case 'dashboard':
-        return <Dashboard cart={cart} addFlash={addFlash}/>
+        return <Dashboard cart={cart} addFlash={addFlash} sessionToken={sessionToken}/>
       default:
         console.log("view undefined, view=", view)
     }
@@ -83,11 +89,14 @@ function App() {
 
   React.useEffect(() => {
     setFlashes([])
+    if (sessionToken === '') {
+      clearThenAddFlash({type: 'warning', text: 'Sign in to save orders to history.', href: 'signIn'})
+    }
   }, [view])
-
+  
   return (
     <div className="App">
-      <Header setView={setView} searchBarValue={searchBarValue} setSearchBarValue={setSearchBarValue}/>
+      <Header setView={setView} searchBarValue={searchBarValue} setSearchBarValue={setSearchBarValue} sessionToken={sessionToken} setSessionToken={setSessionToken}/>
       {flashes}
       {page()}
     </div>

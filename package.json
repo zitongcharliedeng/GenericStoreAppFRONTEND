@@ -1,4 +1,9 @@
-{
+  { "jest": {
+    "moduleNameMapper": {
+      "axios": "axios/dist/node/axios.cjs"
+    }
+  },
+  "proxy": "http://localhost:4000",
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
@@ -12,7 +17,7 @@
     "@mui/material": "^5.10.17",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.2.1",
     "google-map-react": "^2.2.0",
     "jest": "^27.5.1",
     "react": "^18.2.0",
@@ -46,5 +51,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^8.19.0",
+    "@testing-library/user-event": "^14.4.3"
   }
 }

@@ -17,7 +17,6 @@ const ProductGrid = (props) => {
     return false
   }
   const productListAfterSearch = props.productList.filter(searchCheck)
-  console.log(productListAfterSearch)
 
   const productGrid = () => {
     if (productListAfterSearch.length === 0) {

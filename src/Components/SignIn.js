@@ -1,3 +1,4 @@
+import axios from 'axios';
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -12,6 +13,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 
 function Copyright(props) {
   return (
@@ -29,13 +31,18 @@ function Copyright(props) {
 const theme = createTheme();
 
 const SignIn = (props) => {
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const email = data.get('email')
+    const password = data.get('password')
+    try {
+      const response = await axios.post("/sessions", {user: {email: email, password: password}})
+      props.addFlash({type: response.data.alert, text: response.data.message })
+      props.setSessionToken(response.data.token)
+    } catch (error) {
+      console.log(error)
+    }
   };
 
 const handleSignUpClick = () => {

@@ -14,8 +14,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
+import axios from 'axios';
 
-export default function Checkout({cart}) {
+export default function Checkout({cart, setCart, sessionToken}) {
+  const [orderNumber, setOrderNumber] = React.useState();
   const [activeStep, setActiveStep] = React.useState(0);
   const [addresses, setAddresses] = React.useState({
     firstName: '',
@@ -64,13 +66,25 @@ export default function Checkout({cart}) {
 
   const theme = createTheme();
 
-  const handleNext = () => {
+  const handleNext = async (event) => {
     setActiveStep(activeStep + 1);
+    if (event.target.textContent === 'Place order') {await postOrder()}
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
+
+  const postOrder = async () => {
+    try {
+      const response = await axios.post("/orders", {order: {list: JSON.stringify(cart)}}, {headers: {sessionToken: sessionToken}})
+      console.log(response.data)
+      setOrderNumber(response.data.orderNumber)
+    } catch (error) {
+      console.log(error)
+    }
+    setCart([])
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -103,7 +117,7 @@ export default function Checkout({cart}) {
                 Thank you for your order.
               </Typography>
               <Typography variant="subtitle1">
-                Your order number is #2001539. We have emailed your order
+                Your order number is #{orderNumber}. We have emailed your order
                 confirmation, and will send you an update when your order has
                 shipped.
               </Typography>

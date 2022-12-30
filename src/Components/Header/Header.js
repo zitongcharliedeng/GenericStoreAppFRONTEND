@@ -13,8 +13,12 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import SearchBar from './SearchBar';
 import ShoppingCart from './ShoppingCart';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-const sections = ['Items for sale', 'Your purchase history', 'Create an account'];
+const sectionObjectItemsForSale = {name: 'Items for sale', ariaLabel: 'itemsForSale'}
+const sectionObjectYourPurchaseHistory = {name: 'Your purchase history', ariaLabel: 'yourPurchaseHistory'}
+const sectionObjectCreateAnAccount = {name: 'Create An Account', ariaLabel: 'createAnAccount'}
+const sectionObjects = [sectionObjectItemsForSale, sectionObjectYourPurchaseHistory, sectionObjectCreateAnAccount];
 const settings = ['Logout'];
 
 function Header(props) {
@@ -41,21 +45,33 @@ function Header(props) {
   }
   
   const handleSectionClick = (event) => {
-    handleCloseNavMenu()
+
+    //handleCloseNavMenu()
     //.innerText and CAPS used since the component converts the section (name) like that
-    switch(event.target.innerText){
-      case 'ITEMS FOR SALE':
+    //innerText replaced by textContent because https://stackoverflow.com/questions/47902335/innertext-is-undefined-in-jest-test
+    
+    switch(event.target.textContent){
+      case sectionObjectItemsForSale.name:
         props.setView('productsAll')
-        return console.log("clicked Items for sale")
-      case 'YOUR PURCHASE HISTORY':
+        return
+      case sectionObjectYourPurchaseHistory.name:
         props.setView('dashboard')
-        return console.log("clicked Your purchase history")
-      case 'CREATE AN ACCOUNT':
+        return
+      case sectionObjectCreateAnAccount.name:
         props.setView('signUp')
-        return console.log("clicked Create an account")
+        return
       default:
         return console.log("unknown handleSectionClick section name")
     }
+  }
+
+  const handleSignInClick = () => {
+    props.setView('signIn')
+  }
+
+  const handleSignOut = (event) => {
+    handleCloseUserMenu(event)
+    props.setSessionToken('')
   }
 
   return (
@@ -110,9 +126,9 @@ function Header(props) {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {sections.map((section) => (
-                <MenuItem key={section} onClick={handleSectionClick}>
-                  <Typography textAlign="center">{section}</Typography>
+              {sectionObjects.map((sectionObject) => (
+                <MenuItem key={sectionObject.ariaLabel} aria-label={sectionObject.ariaLabel+"Mobile"} onClick={handleSectionClick}>
+                  <Typography textAlign="center">{sectionObject.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -138,13 +154,14 @@ function Header(props) {
             TheEverythingStore
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {sections.map((section) => (
+            {sectionObjects.map((sectionObject) => (
               <Button
-                key={section}
+                key={sectionObject.ariaLabel}
+                aria-label={sectionObject.ariaLabel}
                 onClick={handleSectionClick}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {section}
+                {sectionObject.name}
               </Button>
             ))}
           </Box>
@@ -152,33 +169,37 @@ function Header(props) {
           <ShoppingCart setView={props.setView}/>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+            { props.sessionToken === '' ?
+                  <Button variant="contained" color="success" onClick={handleSignInClick}>Sign In</Button>
+              :
+                
+                <><Tooltip title="Open account settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar><AccountCircleIcon/></Avatar>
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <MenuItem key='signOut' onClick={handleSignOut}>
+                    <Typography textAlign="center">Log Out</Typography>
+                  </MenuItem>
+                </Menu></>
+            }
+
           </Box>
         </Toolbar>
       </Container>

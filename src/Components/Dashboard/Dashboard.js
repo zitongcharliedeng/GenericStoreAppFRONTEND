@@ -21,6 +21,7 @@ import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
+import axios from 'axios';
 
 function Copyright(props) {
   return (
@@ -65,12 +66,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-export default function Dashboard() {
-  const [open, setOpen] = React.useState(true);
+const DashboardWhenSignedIn = (props) => {
+  const [open, setOpen] = React.useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  const [dashboardView, setDashBoardView] = React.useState('overView')
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -121,7 +121,7 @@ export default function Dashboard() {
                     height: 240,
                   }}
                 >
-                  <Chart />
+                  <Chart orders={props.orders}/>
                 </Paper>
               </Grid>
               {/* Recent Deposits */}
@@ -134,13 +134,13 @@ export default function Dashboard() {
                     height: 240,
                   }}
                 >
-                  <Deposits />
+                  <Deposits sessionToken={props.sessionToken} orders={props.orders}/>
                 </Paper>
               </Grid>
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders />
+                  <Orders orders={props.orders}/>
                 </Paper>
               </Grid>
             </Grid>
@@ -152,5 +152,74 @@ export default function Dashboard() {
   );
 }
 
+const DashboardWhenNotSignedIn = (props) => {
+  return(
+    <ThemeProvider theme={mdTheme}>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <Box
+          component="main"
+          sx={{
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: '100vh',
+            overflow: 'auto',
+          }}
+        >
+          <Toolbar />
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Paper
+              sx={{
+                p: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                height: 240,
+                alignItems: 'center'
+              }}
+            >
+              <h2>
+                Please "Sign In" to view your order history
+              </h2>
+                
+            </Paper>
+              
+            <Copyright sx={{ pt: 4 }} />
+          </Container>
+        </Box>
+      </Box>
+    </ThemeProvider>
+  )
+}
 
+const Dashboard = (props) => {
+  const [orders, setOrders] = React.useState([])
 
+  React.useEffect(() => {
+    const getOrders = async () => {
+      try {
+        const response = await axios.get("/orders", {headers: {sessionToken: props.sessionToken}})
+        setOrders(response.data.ordersFromUser.scope); //removing this semicolon breaks everything https://stackoverflow.com/questions/31013221/typeerror-console-log-is-not-a-function because it reads next line's brackets like setOrders(...)(some argument) = somefunction(some argument)
+        // this line used to contain something like: (some argument).length.save......
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getOrders()
+  }, [props.sessionToken])
+  
+  return(
+    <>
+      {
+        (props.sessionToken === '')?
+          <DashboardWhenNotSignedIn/>
+        :
+          <DashboardWhenSignedIn sessionToken={props.sessionToken} orders={orders}/>
+      }
+    </>
+  )
+}
+
+export default Dashboard

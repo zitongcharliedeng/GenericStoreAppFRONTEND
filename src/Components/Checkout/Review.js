@@ -24,8 +24,8 @@ export default function Review({cart, addresses, payments}) {
         Order summary
       </Typography>
       <List disablePadding>
-        {cart.map((product) => (
-          <ListItem key={product.name} sx={{ py: 1, px: 0 }}>
+        {cart.map((product, i) => (
+          <ListItem key={i} sx={{ py: 1, px: 0 }}>
             <ListItemText primary={product.name} secondary={product.quantity} />
             <Typography variant="body2">{`£${product.cost}`} </Typography>
           </ListItem>
@@ -43,7 +43,6 @@ export default function Review({cart, addresses, payments}) {
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Shipping
           </Typography>
-          <Typography gutterBottom>John Smith</Typography>
           <Typography gutterBottom>
             <Grid container>
               {Object.keys(addresses).map((k) => (
@@ -67,7 +66,7 @@ export default function Review({cart, addresses, payments}) {
             {Object.keys(payments).map((k) => (
               <React.Fragment key={k}>
                 <Grid item xs={6}>
-                  <Typography gutterBottom>{k}</Typography>
+                  <Typography gutterBottom>{k}: </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <Typography gutterBottom>{payments[k]}</Typography>

@@ -29,8 +29,8 @@ export const PreCheckout = ({cart, setView}) => {
             In cart currently:
           </Typography>
           <List disablePadding>
-            {cart.map((product) => (
-              <ListItem key={product.name} sx={{ py: 1, px: 0 }}>
+            {cart.map((product, i) => (
+              <ListItem key={i} sx={{ py: 1, px: 0 }}>
                 <ListItemText primary={product.name} secondary={product.quantity} />
                 <Typography variant="body2">{`£${product.cost}`} </Typography>
               </ListItem>

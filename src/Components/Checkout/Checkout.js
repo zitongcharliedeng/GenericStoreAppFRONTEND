@@ -15,8 +15,11 @@ import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
 import axios from 'axios';
+import GoogleMap from './GoogleMap';
+import PrintableReceipt from './PrintableReceipt/PrintableReceipt';
 
 export default function Checkout({cart, setCart, sessionToken}) {
+  const [cartLocal, setCartLocal] = React.useState([])
   const [orderNumber, setOrderNumber] = React.useState();
   const [activeStep, setActiveStep] = React.useState(0);
   const [addresses, setAddresses] = React.useState({
@@ -37,17 +40,17 @@ export default function Checkout({cart, setCart, sessionToken}) {
   });
 
   function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit">
-        TheEverythingStore
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+    return (
+      <Typography variant="body2" color="text.secondary" align="center">
+        {'Copyright © '}
+        <Link color="inherit">
+          TheEverythingStore
+        </Link>{' '}
+        {new Date().getFullYear()}
+        {'.'}
+      </Typography>
+    );
+  }
 
   const steps = ['Shipping address', 'Payment details', 'Review your order'];
 
@@ -58,7 +61,7 @@ export default function Checkout({cart, setCart, sessionToken}) {
       case 1:
         return <PaymentForm payments={payments} setPayments={setPayments}/>;
       case 2:
-        return <Review cart={cart} addresses={addresses} payments={payments}/>;
+        return <Review cart={cart} addresses={addresses} payments={payments}/>
       default:
         throw new Error('Unknown step');
     }
@@ -68,7 +71,7 @@ export default function Checkout({cart, setCart, sessionToken}) {
 
   const handleNext = async (event) => {
     setActiveStep(activeStep + 1);
-    if (event.target.textContent === 'Place order') {await postOrder()}
+    if (event.target.textContent === 'Place order') {setCartLocal(cart); await postOrder()}
   };
 
   const handleBack = () => {
@@ -118,9 +121,11 @@ export default function Checkout({cart, setCart, sessionToken}) {
               </Typography>
               <Typography variant="subtitle1">
                 Your order number is #{orderNumber}. We have emailed your order
-                confirmation, and will send you an update when your order has
-                shipped.
+                confirmation. You may pick up your order at our warehouse located here:
               </Typography>
+              <GoogleMap location={{address: '1600 Amphitheatre Parkway, Mountain View, california.', lat: 37.42216, lng: -122.08427}} zoomLevel={15} style={{display: 'flex'}} />
+              
+              <PrintableReceipt cart={cartLocal} orderNumber={orderNumber} />
             </React.Fragment>
           ) : (
             <React.Fragment>

@@ -4,7 +4,7 @@ import ProductGrid from './Components/ProductGrid/ProductGrid.js'
 import React, { useState } from 'react';
 import { PreCheckout } from './Components/PreCheckout';
 import { Alert } from '@mui/material';
-import PrintableOrderConfirmation from './Components/PrintableOrderConfirmation/PrintableOrderConfirmation';
+import PrintableOrderConfirmation from './Components/Checkout/PrintableReceipt/PrintableReceipt';
 import SignIn from './Components/SignIn';
 import SignUp from './Components/SignUp';
 import Checkout from './Components/Checkout/Checkout';

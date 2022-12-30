@@ -1,5 +1,4 @@
 .map {
-  width: 50%;
 }
 
 .map-h2 {
@@ -27,7 +26,7 @@
 
 @media screen and (min-width: 799px) {
   .google-map {
-    height: 80vh;
+    height: 30vh;
   }
 
   .map-h2 {

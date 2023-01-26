@@ -1,4 +1,4 @@
-Frontend: https://github.com/zitongcharliedeng/MyTimelineAppFRONTEND
+Backend: https://github.com/zitongcharliedeng/MyTimelineAppBACKEND
 # Running in development #
 
 https://user-images.githubusercontent.com/108423881/214722931-54750df0-492d-4ecb-93a6-7905935eecf8.mp4
